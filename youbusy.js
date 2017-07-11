@@ -67,20 +67,20 @@ function listEvents(auth) {
               startDateTime.getDay() < customization.workday.startDay ||
               startDateTime.getDay() > customization.workday.endDay) return 0;
           }
-          var summary = event.summary.toLowerCase();
+          var summary = (event.summary ? event.summary.toLowerCase() : '');
           if (youbusyHelper.isIgnoredSummary(summary, customization.ignored)) {
             return 0;
           }
-         if (!event['attendees']) return 1;
-         var rsvpYes = 0;
-         for(var attendeeIndex = 0; attendeeIndex < event['attendees'].length; attendeeIndex++) {
-           var attendee = event['attendees'][attendeeIndex];
-           if (attendee['email'] == this.attendeeName && attendee['responseStatus'] == 'accepted') {
-             rsvpYes = 1;
-             break;
-           }
-         }
-         return rsvpYes;
+          if (!event['attendees']) return 1;
+          var rsvpYes = 0;
+          for(var attendeeIndex = 0; attendeeIndex < event['attendees'].length; attendeeIndex++) {
+            var attendee = event['attendees'][attendeeIndex];
+            if (attendee['email'] == this.attendeeName && attendee['responseStatus'] == 'accepted') {
+              rsvpYes = 1;
+              break;
+            }
+          }
+          return rsvpYes;
         }.bind({attendeeName:this.calendarId}));
         for (var i = 0; i < filteredEvents.length; i++) {
           var event = filteredEvents[i];
